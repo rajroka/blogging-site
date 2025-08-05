@@ -1,66 +1,58 @@
 'use client';
 
-import Image from "next/image";
-import Link from "next/link";
+import React, { useState } from 'react';
+import Image from 'next/image';
 
-const SplitHero = () => {
+const categories = [
+  { name: 'Electronics', image: '/44.png' },
+  { name: 'Fashion', image: '/66.png' },
+  { name: 'Books', image: '/55.png' },
+  { name: 'Fitness', image: '/hero.png' },
+];
+
+const Hero: React.FC = () => {
+  const [activeIndex] = useState(0); // You can change this index to display a different image
+
+  const activeCategory = categories[activeIndex];
+
   return (
-    <section className="relative w-full min-h-[90vh] md:min-h-[auto] flex flex-col md:flex-row">
-      {/* Left Content Section */}
-      <div className="w-full md:w-1/2 bg-gradient-to-br from-gray-50 to-gray-100 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
-        <div className="max-w-lg mx-auto space-y-6">
-          <span className="inline-block px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium">
-            New Collection
-          </span>
-          
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900">
-            Summer Essentials <br className="hidden sm:block" /> 2024
-          </h1>
-          
-          <p className="text-lg text-gray-600">
-            Discover our curated selection of premium quality apparel designed for comfort and style
-          </p>
-          
-          <div className="flex flex-wrap gap-4 pt-2">
-            <Link href="/products">
-              <button className="px-6 py-3 bg-black text-white rounded hover:bg-gray-800 transition-colors">
-                Shop Now
-              </button>
-            </Link>
-            <Link href="/products">
-              <button className="px-6 py-3 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-                View Collection
-              </button>
-            </Link>
-          </div>
-          
-          <div className="pt-6 flex items-center gap-4">
-           
-            <span className="text-sm text-gray-500">
-              Trusted by many customers . 
-            </span>
-          </div>
-        </div>
-      </div>
+    <div className="min-h-screen  w-full flex flex-col md:flex-row bg-amber-300 px-4 md:px-12 lg:px-20 py-6 md:py-10">
+      {/* Left Sidebar */}
+      <aside className="w-full md:w-1/4 bg-black h-screen  text-white grid grid-cols-1  p-2  rounded-md">
+      
+      <h2 className='text-white  manu  font-bold text-3xl   z-10  '>Life with sport</h2>
+       <div className='w-full h-100  bg-fuchsia-400 rounded relative  '>
 
-      {/* Right Image Section */}
-      <div className="w-full md:w-1/2 relative h-[50vh] md:h-auto">
-        <Image
-          src="/66.png"
-          alt="Stylish models wearing summer collection"
-          fill
-          priority
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 50vw"
-        />
-        {/* Promo Badge on Image */}
-        <div className="absolute bottom-8 left-8 bg-white px-4 py-2 rounded-lg shadow-lg">
-          <span className="block text-sm font-medium">Up to</span>
-          <span className="block text-2xl font-bold">40% OFF</span>
-        </div>
-      </div>
-    </section>
+        <Image  src="/player.jpg" fill alt='player' />
+        
+         </div>
+       <div className='w-full  bg-fuchsia-400'>Lower part </div>
+      </aside>
+
+      {/* Center Content */}
+      <main className="w-full md:w-2/4 bg-white h-screen  flex flex-col justify-center items-center p-6 rounded-lg shadow-lg mx-2 my-4 md:my-0">
+        {activeCategory && (
+          <div className="relative h-full   w-full bg-fuchsia-400  md:h-64 rounded-lg overflow-hidden shadow-md">
+            
+            <Image
+              src={activeCategory.image}
+              alt={`${activeCategory.name} image`}
+              fill
+              className="object-cover rounded-lg"
+              priority
+            />
+          </div>
+        )}
+
+      
+      </main>
+
+      {/* Right Sidebar */}
+      <aside className="w-full md:w-1/4 bg-black text-white flex items-center justify-center p-6 rounded-md">
+        <p className="text-lg font-semibold tracking-wide">Right Sidebar</p>
+      </aside>
+    </div>
   );
 };
 
-export default SplitHero;
+export default Hero;

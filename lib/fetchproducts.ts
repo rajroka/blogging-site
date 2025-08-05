@@ -1,39 +1,46 @@
-import Product from '@/lib/modals/Product';
+import {  BlogPost } from '@/lib/modals/Blog'; 
 import connect from '@/lib/db';
 
-export const fetchproducts = async () => {
+export const fetchBlogs = async () => {
   await connect();
-  const products = await Product.find();
+  const blogs = await BlogPost.find().sort({ createdAt: -1 });
 
-  return products.map(product => ({
-    _id: product._id.toString(),               // ✅ convert ObjectId
-    name: product.name,
-    image: product.image,
-    price: product.price,
-    category: product.category,
-    createdAt: product.createdAt?.toISOString(), // ✅ convert Date
-    updatedAt: product.updatedAt?.toISOString(), // ✅ convert Date
+  return blogs.map((blog : any) => ({
+    _id: blog._id.toString(),
+    title: blog.title,
+    content: blog.content,
+    author: blog.author,
+    authorName: blog.authorName || '',
+    authorEmail: blog.authorEmail || '',
+    category: blog.category || '',
+    tags: blog.tags || [],
+    featuredImage: blog.featuredImage || '',
+    slug: blog.slug || '',
+    comments: blog.comments || [],
+    createdAt: blog.createdAt?.toISOString() || '',
+    updatedAt: blog.updatedAt?.toISOString() || '',
   }));
 };
 
-
-
-export const fetchProductById = async (id: string) => {
+export const fetchBlogById = async (id: string) => {
   await connect();
-  const product = await Product.findById(id);
-  if (!product) {
-    throw new Error('Product not found');
+  const blog = await BlogPost.findById(id);
+  if (!blog) {
+    throw new Error('Blog not found');
   }
   return {
-    _id: product._id.toString(),               // ✅ convert ObjectId
-    name: product.name,
-    description: product.description || '', // ✅ provide fallback for missing description
-    image: product.image,
-    price: product.price,
-    category: product.category,
-    createdAt: product.createdAt?.toISOString(), // ✅ convert Date
-      updatedAt: product.updatedAt?.toISOString(), // ✅ convert Date
-    };
+    _id: blog._id.toString(),
+    title: blog.title,
+    content: blog.content,
+    author: blog.author,
+    authorName: blog.authorName || '',
+    authorEmail: blog.authorEmail || '',
+    category: blog.category || '',
+    tags: blog.tags || [],
+    featuredImage: blog.featuredImage || '',
+    slug: blog.slug || '',
+    comments: blog.comments || [],
+    createdAt: blog.createdAt?.toISOString() || '',
+    updatedAt: blog.updatedAt?.toISOString() || '',
   };
-
-  
+};

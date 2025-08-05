@@ -1,38 +1,50 @@
-import React from "react";
-import Link from "next/link";
+import Link from 'next/link'
+import React from 'react'
 
 const Sidebar = () => {
-  const linkStyle =
-    "w-full flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-600 hover:text-white transition-colors";
-
-  const categories = [
-    { name: "Shop All", slug: "" },
-    { name: "Computers", slug: "computers" },
-    { name: "Tablets", slug: "tablets" },
-    { name: "Drones & Cameras", slug: "drones-cameras" },
-    { name: "Audio", slug: "audio" },
-    { name: "T.V & Home Cinema", slug: "tv-home-cinema" },
-    { name: "Mobile", slug: "mobile" },
-    { name: "Wearable Tech", slug: "wearable-tech" },
-    { name: "Sale", slug: "sale" },
-  ];
-
   return (
-    <div className="w-64 fixed left-0 top-0 h-screen hidden md:block pt-24 bg-gray-200 px-6 text-gray-800">
-      <div className="w-full h-full flex flex-col items-start justify-start gap-4">
-        <Link href="/" className={linkStyle}>🏠 Home</Link>
-        {categories.map((cat) => (
-          <Link
-            key={cat.slug}
-            href={`/products/${cat.slug}`}
-            className={linkStyle}
-          >
-            {cat.name}
-          </Link>
-        ))}
+    <div className="w-64 bg-white shadow-md">
+      <div className="p-4 border-b">
+        <h1 className="text-xl font-bold text-gray-800">Admin Panel</h1>
       </div>
+      <nav className="p-4">
+        <ul className="space-y-2">
+          <li>
+            <Link
+              href="/dashboard"
+              className="block px-4 py-2 text-green-600 bg-green-50 hover:bg-green-100 rounded transition"
+            >
+              View All Posts
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/dashboard/edit-blog"
+              className="block px-4 py-2 text-green-600 bg-green-50 hover:bg-green-100 rounded transition"
+            >
+              Edit Blog
+            </Link>
+          </li>
+           <li>
+            <Link
+              href="/dashboard/all-blogs"
+              className="block px-4 py-2 text-green-600 bg-green-50 hover:bg-green-100 rounded transition"
+            >
+              All blogs 
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/dashboard/add-blogs"
+              className="block px-4 py-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded transition"
+            >
+              Add New Post
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

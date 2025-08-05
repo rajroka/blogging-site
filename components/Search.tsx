@@ -1,69 +1,132 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-interface Product {
-  id: number;
+import React, { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+
+interface Blog {
+  id: string;
   title: string;
-  image: string;
+  description: string;
+  author: string;
 }
 
-const SearchPage: React.FC = () => {
-  const [search, setSearch] = useState('');
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filtered, setFiltered] = useState<Product[]>([]);
-    const router = usePathname();
-  const query  = router.split('?')[1] ? router.split('?')[1].split('=')[1] : ''; 
-  // Fetch all products
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const res = await fetch('api/products');
-      const data = await res.json();
-      setProducts(data);
-      setFiltered(data);
-    };
-    fetchProducts();
-  }, []);
+export default function SearchBar() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search') || '';
 
-  // Filter based on search
+  const [results, setResults] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(false);
+  // Removed error state as you requested no error messages
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    watch,
+  } = useForm<{ searchTerm: string }>({
+    defaultValues: {
+      searchTerm: '',
+    },
+  });
+
+  const searchTerm = watch('searchTerm');
+
   useEffect(() => {
-    if(query){
-      const filteredResults = products.filter((product) =>
-        product.title.toLowerCase().includes(search.toLowerCase())
-      );
-      setFiltered(filteredResults);
+    reset({ searchTerm: search });
+
+    if (!search) {
+      setResults([]);
+      return;
     }
-   
-  }, [query, products]);
+
+    const fetchBlogs = async () => {
+      setLoading(true);
+
+      try {
+        const res = await fetch(`/api/blogs?search=${encodeURIComponent(search)}`);
+        if (!res.ok) {
+          // Don't show error, just clear results
+          setResults([]);
+          return;
+        }
+        const blogs: Blog[] = await res.json();
+        setResults(blogs);
+      } catch {
+        // On fetch error, just clear results, no error shown
+        setResults([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, [search, reset]);
+
+  const onSubmit = (data: { searchTerm: string }) => {
+    const trimmed = data.searchTerm.trim();
+    if (trimmed) {
+      router.push(`?search=${encodeURIComponent(trimmed)}`);
+    } else {
+      router.push('/');
+    }
+  };
+
+  const clearSearch = () => {
+    reset({ searchTerm: '' });
+    setResults([]);
+    router.push('/');
+  };
 
   return (
-    <div className="p-6 min-h-screen bg-zinc-100 dark:bg-zinc-900">
-      {/* Search bar */}
-      
-
-      {/* Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
-        {filtered.length > 0 ? (
-          filtered.map((product) => (
-            <div key={product.id} className="bg-white dark:bg-zinc-800 p-4 rounded-lg shadow-md">
-              <div className="relative h-48 w-full">
-                <Image
-                  src={product.image}
-                  alt={product.title}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <h2 className="mt-4 font-semibold text-lg dark:text-white">{product.title}</h2>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-gray-500 mt-10">No products found.</p>
+    <div className="max-w-lg mx-auto p-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex items-center gap-2 mb-4 relative">
+        <input
+          type="text"
+          placeholder="Search blogs..."
+          {...register('searchTerm', { required: true })}
+          className="flex-grow p-2 border border-gray-300 rounded pr-10"
+        />
+        {/* Clear button (cross) */}
+        {searchTerm && (
+          <button
+            type="button"
+            onClick={clearSearch}
+            aria-label="Clear search"
+            className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"
+          >
+            &#10005;
+          </button>
         )}
-      </div>
+        <button
+          type="submit"
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Search
+        </button>
+      </form>
+
+      {errors.searchTerm && (
+        <p className="text-red-500 mb-2">Search term is required.</p>
+      )}
+
+      {loading && <p>Loading results...</p>}
+
+      {!loading && results.length === 0 && search && (
+        <p>No results found for "{search}"</p>
+      )}
+
+      <ul className="space-y-4">
+        {results.map((blog) => (
+          <li key={blog.id} className="border p-4 rounded shadow">
+            <h3 className="font-semibold text-lg">{blog.title}</h3>
+            <p className="text-gray-700">{blog.description}</p>
+            <p className="text-sm text-gray-500 mt-1">By {blog.author}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
-};
-
-export default SearchPage;
+}

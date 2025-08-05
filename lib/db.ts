@@ -30,7 +30,7 @@ const connect = async () => {
 
     try {
         await mongoose.connect(MONGO_URI, {
-            dbName: "nextjsapi", // Database name
+            dbName: "blog10", // Database name
             bufferCommands: true // Buffer commands while the connection is being established
         });
         console.log("Connected to MongoDB");

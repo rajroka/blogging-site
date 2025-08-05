@@ -1,21 +1,10 @@
 // components/AuthSync.tsx
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { loginn } from '@/redux/slice/authSlice';
+import React from "react";
 
 const AuthSync = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
-    if (token && user) {
-      dispatch(loginn(JSON.parse(user)));
-    }
-  }, []);
-
+  // This component can be used to sync auth state between tabs or refresh tokens
   return null;
 };
 

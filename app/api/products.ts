@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { data } from 'framer-motion/client';
 import { NextResponse } from 'next/server';
 
 export async function postProduct(data: {  name: string; description: string; price: number; image: string; category: string; stock: number; rating: number; reviews: number; }){
@@ -24,16 +23,7 @@ export async function postProduct(data: {  name: string; description: string; pr
 
 
 
-// export async function getAllProductsApi() {
-//   try {
-//     const response = await axios.get("/api/products");
-//     return response.data;
-//   } catch (error: any) {
-//     console.error("Failed to fetch products:", error.message);
-//     throw new Error("Unable to fetch products");
 
-//   }
-// }
 
 export async function getByID(id:string){
   try {
