@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import connect from '@/lib/db';
 import { BlogPost } from '@/lib/modals/Blog';
 import { auth } from '@clerk/nextjs/server';
-
+import { clerkClient } from '@clerk/clerk-sdk-node';
 export async function POST(req: Request) {
   const { userId } = await auth();
   if (!userId) {
@@ -10,11 +10,17 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json();
-  const { title, content, category, tags, featuredImage, authorName, authorEmail } = body;
+  const { title, content, category, tags, featuredImage, authorName, authorEmail , authorImage } = body;
 
   try {
     await connect();
-
+  const user = await clerkClient.users.getUser(userId);
+  
+  const authorName =
+  `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() ||
+  user.username ||
+  user.emailAddresses[0]?.emailAddress ||
+  'Unknown Author';
     const newPost = await BlogPost.create({
       title,
       content,
@@ -22,9 +28,17 @@ export async function POST(req: Request) {
       tags,
       featuredImage,
       author: userId,
-      authorName: authorName || 'Unknown Author',
-      authorEmail: authorEmail || '',
+      authorName: authorName || 'guest',
+      authorEmail: user.emailAddresses[0].emailAddress || '',
+      authorImage: user.imageUrl || '', 
+      createdAt: new Date(),
+      updatedAt: new Date(),
+
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      
+
     });
+// console.log('Saved authorImage:', user.imageUrl);
 
     return NextResponse.json(newPost, { status: 201 });
   } catch (err) {

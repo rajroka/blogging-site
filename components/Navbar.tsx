@@ -3,9 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
-import { motion } from 'framer-motion';
-
-import React  from 'react';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from '@/components/ui/navigation-menu';
+import React from 'react';
 
 type Props = {
   isAdmin?: boolean;
@@ -15,50 +19,50 @@ const Navbar = ({ isAdmin = false }: Props) => {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith('/dashboard');
 
-  
-
-
   const mainNav = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/blog', label: 'Blog' },
     { href: '/contact', label: 'Contact' },
-    ...(isAdmin ? [{ href: '/dashboard', label: 'dashboard' }] : []),
+    ...(isAdmin ? [{ href: '/dashboard', label: 'Dashboard' }] : []),
   ];
 
   const dashboardNav = [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/dashboard/all-blogs', label: 'All Blogs' },
     { href: '/dashboard/add-blog', label: 'Add Blog' },
-    // ...(isAdmin ? [{ href: '/dashboard', label: 'dashboard' }] : []),
   ];
 
   const currentNav = isDashboard ? dashboardNav : mainNav;
 
   return (
-    <motion.header
-      initial={{ y: -25, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="w-full top-0 z-50 shadow-sm bg-white sticky dark:bg-gray-900 px-6 md:px-12 lg:px-24"
-    >
-      <div className="max-w-7xl mx-auto h-16 flex items-center justify-between">
+    <div className='w-full  bg-yellow-200 sticky top-0 left-0  dark:bg-gray-800'>
+    <NavigationMenu className="w-full  top-0 z-50 shadow-sm mx-auto bg-green-300 sticky dark:bg-gray-900">
+      <div className="h-16 flex items-center justify-between w-full px-6">
+        {/* Logo */}
         <Link href="/" className="text-xl font-bold text-[#6c47ff]">
           MySite
         </Link>
-        <nav className="hidden md:flex items-center space-x-6">
+
+        {/* Desktop Navigation */}
+        <NavigationMenuList className="hidden md:flex items-center space-x-6">
           {currentNav.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`text-gray-700 dark:text-gray-300 hover:text-[#6c47ff] transition ${
-                pathname === href ? 'font-semibold text-[#6c47ff]' : ''
-              }`}
-            >
-              {label}
-            </Link>
+            <NavigationMenuItem key={href}>
+              <NavigationMenuLink asChild>
+                <Link
+                  href={href}
+                  className={`text-sm transition-colors hover:text-[#6c47ff] dark:text-gray-300 text-gray-700 ${
+                    pathname === href ? 'bg-[#6c47ff] text-white ' : ''
+                  }`}
+                >
+                  {label}
+                </Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
           ))}
-        </nav>
+        </NavigationMenuList>
+
+        {/* Auth Buttons */}
         <div className="flex items-center space-x-4">
           <SignedOut>
             <SignInButton>
@@ -77,7 +81,8 @@ const Navbar = ({ isAdmin = false }: Props) => {
           </SignedIn>
         </div>
       </div>
-    </motion.header>
+    </NavigationMenu>
+    </div>
   );
 };
 

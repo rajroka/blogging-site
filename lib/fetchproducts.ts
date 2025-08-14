@@ -12,6 +12,7 @@ export const fetchBlogs = async () => {
     author: blog.author,
     authorName: blog.authorName || '',
     authorEmail: blog.authorEmail || '',
+    authorImage: blog.authorImage || '',
     category: blog.category || '',
     tags: blog.tags || [],
     featuredImage: blog.featuredImage || '',
@@ -21,6 +22,7 @@ export const fetchBlogs = async () => {
     updatedAt: blog.updatedAt?.toISOString() || '',
   }));
 };
+
 
 export const fetchBlogById = async (id: string) => {
   await connect();

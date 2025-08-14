@@ -1,3 +1,4 @@
+import Editclient from '@/components/Editclient';
 import { fetchBlogById } from '@/lib/fetchproducts';
 import React from 'react'
 
@@ -9,13 +10,7 @@ const page = async({params } : {params : {blogId : string}}) => {
 
   return (
     
-    <div>
-      {
-        blog.title
-      }
-
-
-    </div>
+       <Editclient blog={blog} />
   )
 }
 

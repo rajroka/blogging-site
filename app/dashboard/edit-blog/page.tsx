@@ -7,7 +7,7 @@ export default async function Page() {
 
 
     const blogs = await fetchBlogs();
- 
+    console.log('Fetched blogs:', blogs);
 
   return <BlogList blogs={blogs} />;
 }

@@ -12,6 +12,7 @@ export interface IBlogPost extends Document {
   author: string; // Clerk user ID
   authorName?: string;
   authorEmail?: string;
+  authorImage?: string;
   category?: string;
   tags?: string[];
   featuredImage?: string;
@@ -37,6 +38,7 @@ const blogPostSchema = new Schema<IBlogPost>(
     author: { type: String, required: true },
     authorName: { type: String },
     authorEmail: { type: String },
+    authorImage: { type: String  },
     category: { type: String, trim: true, lowercase: true },
     tags: [String],
     featuredImage: { type: String },
