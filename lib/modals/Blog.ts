@@ -58,5 +58,5 @@ blogPostSchema.pre("save", function (next) {
   next();
 });
 
-export const BlogPost =
+export  const BlogPost =
   mongoose.models.BlogPost || mongoose.model<IBlogPost>("BlogPost", blogPostSchema);
