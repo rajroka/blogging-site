@@ -3,7 +3,7 @@
 import { FiUpload } from 'react-icons/fi';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { postBlog } from '@/app/api/blog'; // your API helper to post blogs
+import { postBlog } from '@/app/api/blog';
 import { CldUploadWidget, CldImage } from 'next-cloudinary';
 import { useUser } from '@clerk/nextjs';
 
@@ -11,7 +11,7 @@ type BlogFormData = {
   title: string;
   content: string;
   category: string;
-  tags: string; // comma separated tags as string for input
+  tags: string;
   featuredImage: string;
 };
 
@@ -31,10 +31,7 @@ export default function AddBlogPage() {
   const [submitError, setSubmitError] = useState('');
 
   const onSubmit = async (data: BlogFormData) => {
-    if (!user) {
-      alert('You must be logged in to post a blog.');
-      return;
-    }
+    if (!user) return alert('You must be logged in to post a blog.');
 
     setLoading(true);
     setSubmitError('');
@@ -48,12 +45,11 @@ export default function AddBlogPage() {
         ...data,
         tags: tagsArray,
         featuredImage: imageUrl,
-        // Optionally send user info if your backend accepts
         authorName: `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim(),
         authorEmail: user.primaryEmailAddress?.emailAddress || '',
       };
 
-      await postBlog(payload as any );
+      await postBlog(payload as any);
       alert('Blog post added successfully!');
       reset();
       setImageId('');
@@ -107,12 +103,13 @@ export default function AddBlogPage() {
         {/* Image Upload Button */}
         <CldUploadWidget
           uploadPreset="hamburger"
+          options={{ resourceType: 'image' }} // only images
           onSuccess={({ event, info }) => {
             if (event === 'success') {
-              const uploadInfo = info as { public_id: string; url: string };
-              setImageId(uploadInfo?.public_id || '');
-              setImageUrl(uploadInfo?.url || '');
-              setValue('featuredImage', uploadInfo?.url || '');
+              const uploadInfo = info as { public_id: string; secure_url: string };
+              setImageId(uploadInfo.public_id);
+              setImageUrl(uploadInfo.secure_url);
+              setValue('featuredImage', uploadInfo.secure_url);
             }
           }}
         >
@@ -149,9 +146,7 @@ export default function AddBlogPage() {
             rows={8}
             placeholder="Write your blog content here"
           />
-          {errors.content && (
-            <p className="text-red-600 text-sm mt-1">{errors.content.message}</p>
-          )}
+          {errors.content && <p className="text-red-600 text-sm mt-1">{errors.content.message}</p>}
         </div>
 
         {/* Category */}
@@ -167,9 +162,7 @@ export default function AddBlogPage() {
             }`}
             placeholder="Enter blog category"
           />
-          {errors.category && (
-            <p className="text-red-600 text-sm mt-1">{errors.category.message}</p>
-          )}
+          {errors.category && <p className="text-red-600 text-sm mt-1">{errors.category.message}</p>}
         </div>
 
         {/* Tags */}
@@ -185,9 +178,7 @@ export default function AddBlogPage() {
           />
         </div>
 
-        {submitError && (
-          <p className="text-red-600 text-center text-sm mb-2">{submitError}</p>
-        )}
+        {submitError && <p className="text-red-600 text-center text-sm mb-2">{submitError}</p>}
 
         <button
           type="submit"

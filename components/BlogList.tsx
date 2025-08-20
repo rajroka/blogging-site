@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 interface Blog {
   _id: string;
@@ -18,7 +19,34 @@ interface Blog {
   createdAt: string;
 }
 
-export default function BlogList({ blogs }: { blogs: Blog[] }) {
+export default function BlogList({ blogs: initialBlogs }: { blogs: Blog[] }) {
+  const [blogs, setBlogs] = useState(initialBlogs);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const handleDelete = async (id: string) => {
+    const confirmDelete = confirm("Are you sure you want to delete this blog?");
+    if (!confirmDelete) return;
+
+    try {
+      setDeletingId(id);
+      const res = await fetch(`/api/blogs/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to delete blog");
+      }
+
+      // Remove blog from local state
+      setBlogs((prev) => prev.filter((blog) => blog._id !== id));
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      alert("Failed to delete blog. Please try again.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   if (blogs.length === 0) {
     return <p className="text-center text-gray-500 py-12">No blogs found.</p>;
   }
@@ -62,7 +90,6 @@ export default function BlogList({ blogs }: { blogs: Blog[] }) {
               </div>
 
               <div className="flex justify-between items-center text-xs text-gray-400 mb-4">
-
                 <div className="flex items-center gap-2">
                   <Image
                     src={blog.authorImage || "/Offer.png"}
@@ -79,8 +106,13 @@ export default function BlogList({ blogs }: { blogs: Blog[] }) {
               </div>
 
               <div className="flex justify-end items-center gap-3 mt-auto">
-                <button className="text-red-500 hover:text-red-700 flex items-center gap-1 text-sm">
-                  <Trash2 size={16} /> Delete
+                <button
+                  onClick={() => handleDelete(blog._id)}
+                  disabled={deletingId === blog._id}
+                  className="text-red-500 hover:text-red-700 flex items-center gap-1 text-sm disabled:opacity-50"
+                >
+                  <Trash2 size={16} />{" "}
+                  {deletingId === blog._id ? "Deleting..." : "Delete"}
                 </button>
                 <Link
                   href={`/dashboard/edit-blog/${blog._id}`}
