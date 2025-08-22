@@ -3,28 +3,22 @@ import connect from "@/lib/db";
 import { BlogPost } from "@/lib/modals/Blog";
 import { auth } from "@clerk/nextjs/server";
 
-export async function GET(
-  req: Request,
-  context: { params: { id: string } }
-) {
+export async function GET(req: Request, { params }: any) {
   await connect();
 
-  const post = await BlogPost.findById(context.params.id);
+  const post = await BlogPost.findById(params.id);
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   return NextResponse.json(post);
 }
 
-export async function PUT(
-  req: Request,
-  context: { params: { id: string } }
-) {
+export async function PUT(req: Request, { params }: any) {
   const { userId } = await auth();
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   await connect();
-  const post = await BlogPost.findById(context.params.id);
+  const post = await BlogPost.findById(params.id);
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   if (post.author !== userId) {
@@ -44,16 +38,13 @@ export async function PUT(
   return NextResponse.json(post);
 }
 
-export async function DELETE(
-  req: Request,
-  context: { params: { id: string } }
-) {
+export async function DELETE(req: Request, { params }: any) {
   const { userId } = await auth();
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   await connect();
-  const post = await BlogPost.findById(context.params.id);
+  const post = await BlogPost.findById(params.id);
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   if (post.author !== userId) {

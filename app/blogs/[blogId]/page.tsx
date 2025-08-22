@@ -13,11 +13,15 @@ interface Blog {
   createdAt?: string;
 }
 
-interface BlogPageProps {
-  params: { id: string };
+interface PageProps {
+  params: {
+    blogId: string;
+  };
 }
 
-export default async function BlogPage({ params } : { params: { blogId: string }})
+
+
+export default async function BlogPage({ params } : any )
  {
 
     const id = params.blogId
