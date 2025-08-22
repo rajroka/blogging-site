@@ -3,24 +3,30 @@ import connect from "@/lib/db";
 import { BlogPost } from "@/lib/modals/Blog";
 import { auth } from "@clerk/nextjs/server";
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  req: Request,
+  context: { params: { id: string } }
+) {
   await connect();
 
-  const post = await BlogPost.findById(params.id);
+  const post = await BlogPost.findById(context.params.id);
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   return NextResponse.json(post);
 }
 
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(
+  req: Request,
+  context: { params: { id: string } }
+) {
   const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!userId)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   await connect();
-  const post = await BlogPost.findById(params.id);
+  const post = await BlogPost.findById(context.params.id);
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // Only author can update
   if (post.author !== userId) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
@@ -28,7 +34,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   const body = await req.json();
   const { title, content, category, tags, featuredImage } = body;
 
-  // Update fields if provided
   if (title) post.title = title;
   if (content) post.content = content;
   if (category) post.category = category;
@@ -39,15 +44,18 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   return NextResponse.json(post);
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
+export async function DELETE(
+  req: Request,
+  context: { params: { id: string } }
+) {
   const { userId } = await auth();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!userId)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   await connect();
-  const post = await BlogPost.findById(params.id);
+  const post = await BlogPost.findById(context.params.id);
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // Only author can delete
   if (post.author !== userId) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
