@@ -14,6 +14,7 @@ interface Blog {
   featuredImage: string;
   createdAt: string;
    author: string;
+  
 }
 
 const Page = async() => {
@@ -68,7 +69,7 @@ const Page = async() => {
                 <span>By {blog.authorName || "Unknown"}</span>
                 </div>
              
-                <span>{blog.readingTime || "5 min read"}</span>
+                <span> 5 min read</span>
               </div>
             </div>
           </Link>

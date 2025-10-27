@@ -45,6 +45,7 @@ export const fetchLatestBlog = async () => {
     category: blog.category || '',
     tags: blog.tags || [],
     featuredImage: blog.featuredImage || '',
+  
     slug: blog.slug || '',
     comments: blog.comments || [],
     createdAt: blog.createdAt?.toISOString() || '',
