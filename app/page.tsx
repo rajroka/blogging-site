@@ -3,6 +3,7 @@ import BentoGrid from '@/components/Bentogrid'
 import Hero from '@/components/Hero'
 import Navbar from '@/components/Navbar'
 import Recentblog from '@/components/Recentblog'
+import Tiptap from '@/components/Tiptap'
 import React from 'react'
 
 const page = () => {
@@ -11,6 +12,7 @@ const page = () => {
 
 <Hero />
 <Recentblog />
+
 {/* <Blogs/ > */}
 {/* <BentoGrid /> */}
   {/* <LoginModal />

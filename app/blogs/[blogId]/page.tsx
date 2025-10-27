@@ -11,6 +11,7 @@ interface Blog {
   featuredImage?: string;
   author?: string;
   createdAt?: string;
+  autherImage : string
 }
 
 interface PageProps {
@@ -52,7 +53,8 @@ export default async function BlogPage({ params } : any )
 
       {/* Meta info */}
       <div className="text-sm text-gray-500 mb-6">
-        {blog.author && <span>✍️ {blog.author}</span>}
+          <Image src={blog.authorImage} alt='hello' height={50} width={50} />
+        {blog.author && <span>✍️ {blog.authorName}</span>}
         {blog.createdAt && (
           <span className="ml-4">📅 {new Date(blog.createdAt).toDateString()}</span>
         )}

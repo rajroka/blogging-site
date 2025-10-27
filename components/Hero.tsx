@@ -1,10 +1,9 @@
-'use client';
 
-import React, { useEffect, useState } from 'react';
+
+import React from 'react';
 import Image from 'next/image';
-import { useForm } from 'react-hook-form';
-import axios from 'axios';
 
+import { fetchLatestBlog } from '@/lib/fetchproducts';
 type FormValues = {
   query: string;
 };
@@ -18,74 +17,44 @@ type Blog = {
   createdAt: string;
 };
 
-const Hero: React.FC = () => {
-  const { register, handleSubmit, reset } = useForm<FormValues>();
-  const [blogs, setBlogs] = useState<Blog[]>([]);
+const Hero = async () => {
+  
+
 
   const onSubmit = (data: FormValues) => {
     console.log('Search Query:', data.query);
-    reset();
+  
   };
 
-  useEffect(() => {
-    const loadBlogs = async () => {
-      try {
-        const res = await axios.get('/api/blogs');
-        setBlogs(res.data.posts?.slice(0, 4) || []);
-      } catch (error) {
-        console.error('Error fetching blogs:', error);
-        setBlogs([]);
-      }
-    };
-    loadBlogs();
-  }, []);
 
-  const featuredBlog = blogs[0];
-  const smallBlogs = blogs.slice(1);
+
+    const blogs = await  fetchLatestBlog();
+
+
+ 
+
+ 
 
   return (
-    <div className="relative w-full min-h-screen bg-gray-100 dark:bg-gray-900 px-4 py-12 font-sans">
+    <div className="relative w-full py-10  px-6 md:px-12 lg:px-20  m-auto bg-[#EDF2F7]  font-sans">
       {/* Background Image */}
-      <Image
+      {/* <Image
         src="/bgobj.png"
         alt="Background"
         fill
         className="absolute inset-0 z-0 opacity-50 object-cover"
-      />
+      /> */}
 
-      {/* Search Section */}
-      <div className="relative  z-10 flex flex-col items-center justify-center text-center mb-12">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-        Dive Into Stories That Inspire You
-        </h1>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-lg flex items-center bg-white dark:bg-gray-800 rounded-full shadow-lg overflow-hidden border border-gray-300 dark:border-gray-700"
-        >
-          <input
-            {...register('query')}
-            type="text"
-            placeholder="Search for blogs..."
-            className="flex-grow px-4 py-3 text-sm sm:text-base outline-none text-gray-700 dark:text-gray-200 bg-transparent"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 flex items-center justify-center"
-          >
-            Search
-          </button>
-        </form>
-      </div>
 
       {/* Featured Blog (slightly smaller) */}
-      {featuredBlog && (
-        <div className="relative z-10 max-w-6xl mx-auto mb-10">
+      {blogs && (
+        <div className="relative z-10  h-full w-full  ">
           <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg flex flex-col md:flex-row h-[400px] sm:h-[450px]">
-            {featuredBlog.featuredImage && (
+            {blogs.featuredImage && (
               <div className="w-full md:w-1/2 h-64 sm:h-full relative">
                 <Image
-                  src={featuredBlog.featuredImage}
-                  alt={featuredBlog.title}
+                  src={blogs.featuredImage}
+                  alt={blogs.title}
                   fill
                   className="object-cover"
                 />
@@ -93,16 +62,16 @@ const Hero: React.FC = () => {
             )}
             <div className="p-6 md:w-1/2 flex flex-col justify-center">
               <h3 className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
-                {featuredBlog.category || 'General'}
+                {blogs.category || 'General'}
               </h3>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
-                {featuredBlog.title}
+                {blogs.title}
               </h2>
               <div className="flex items-center gap-2 mt-4 text-xs text-gray-500 dark:text-gray-400">
-                <span>{featuredBlog.authorName || 'Unknown Author'}</span>
+                <span>{blogs.authorName || 'Unknown Author'}</span>
                 <span>•</span>
-                <time dateTime={featuredBlog.createdAt}>
-                  {new Date(featuredBlog.createdAt).toLocaleDateString()}
+                <time dateTime={blogs.createdAt}>
+                  {new Date(blogs.createdAt).toLocaleDateString()}
                 </time>
               </div>
             </div>
@@ -111,7 +80,7 @@ const Hero: React.FC = () => {
       )}
 
       {/* Smaller Blogs (fit in one row, full width each) */}
-      <div className="relative z-10 max-w-6xl  mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
+      {/* <div className="relative z-10 max-w-6xl  mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
         {smallBlogs.map((blog, idx) => (
           <div
             key={idx}
@@ -142,7 +111,7 @@ const Hero: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

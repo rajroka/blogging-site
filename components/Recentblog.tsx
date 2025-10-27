@@ -10,9 +10,9 @@ const Recentblog = async () => {
   const recentBlogs = blogs.slice(0, 6);
 
   return (
-    <section className="px-6 md:px-12 lg:px-20 py-12">
-      <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">
-        Discover Our <span className="text-blue-600">Latest Blogs</span>
+    <section className="px-6 md:px-12 lg:px-20 py-12 bg-[#EDF2F7]">
+      <h2 className="text-2xl md:text-3xl font-medium text-gray-800 mb-8 text-center">
+        Discover Our <span className="text-blue-600">Featured Blogs </span>
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -20,10 +20,10 @@ const Recentblog = async () => {
           <Link
             href={`/blogs/${blog._id}`}
             key={blog._id}
-            className="group block bg-gray-100 rounded-xl overflow-hidden shadow hover:shadow-lg transition"
+            className="group block bg-white  rounded-xl overflow-hidden shadow hover:shadow-lg transition"
           >
             {/* Image */}
-            <div className="relative w-full h-52">
+            <div className="relative w-full h-60">
               <Image
                 src={blog.featuredImage || "/placeholder.jpg"}
                 alt={blog.title}
@@ -33,19 +33,25 @@ const Recentblog = async () => {
             </div>
 
             {/* Content */}
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+            <div className="px-4 mt-2  ">
+              <div className='flex flex-col  mb-2'>
+                <h3 className="text-lg font-semibold text-gray-800  line-clamp-2">
                 {blog.title}
               </h3>
-              <p className="text-gray-600 text-sm line-clamp-3 mb-3">
+               <p  className='text-xs text-gray-400 ' >{new Date(blog.createdAt).toLocaleDateString()}</p>
+              </div>
+              <p className="text-gray-600 text-sm line-clamp-2 mb-3">
                 {blog.content}
               </p>
       
               {/* Meta Info */}
-              <div className="flex items-center justify-between text-xs text-gray-500">
+              <div className="flex items-center justify-between text-xs mb-2  text-gray-500">
+                <div className='flex items-center gap-2'>
+                  <Image  src={blog.authorImage} className='rounded-full'  alt="" height={30} width={30} />
                 <span>By {blog.authorName || "Unknown"}</span>
-                <span>{blog.authorImage}</span>
-                <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                </div>
+             
+                <span>{blog.readingTime || "5 min read"}</span>
               </div>
             </div>
           </Link>

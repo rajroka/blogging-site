@@ -1,8 +1,10 @@
-'use client';
 
-import React, { useEffect, useState } from 'react';
+
+import React  from 'react';
 import axios from 'axios';
-
+import { fetchBlogs } from '@/lib/fetchproducts';
+import Image from 'next/image';
+import Link from 'next/link';
 interface Blog {
   _id: string;
   title: string;
@@ -14,46 +16,65 @@ interface Blog {
    author: string;
 }
 
-const Page = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
+const Page = async() => {
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const res = await axios.get('/api/blogs');
-        setBlogs(res.data);
-      } catch (err) {
-        console.error('Failed to fetch blogs', err);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchBlogs();
-  }, []);
 
-  if (loading) return <div>Loading...</div>;
+
+    const blogs = await fetchBlogs();
+   
+
+
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">All Blogs</h1>
-      {blogs.length === 0 ? (
-        <p>No blogs found.</p>
-      ) : (
-        <ul className="space-y-4">
-          {blogs.map((blog) => (
-            <li key={blog._id} className="border p-4 rounded shadow">
-              <h2 className="text-xl font-semibold">{blog.title}</h2>
-              <p className="text-gray-600">{blog.category}</p>
-              <img src={blog.featuredImage} alt="featured" className="w-full h-48 object-cover mt-2 rounded" />
-              <p className="mt-2 text-sm text-gray-700">{blog.content.slice(0, 100)}...</p>
-              {blog.author}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+     <section className="px-6 md:px-12 lg:px-20 py-12 bg-[#EDF2F7]">
+      <h2 className="text-2xl md:text-3xl font-medium text-gray-800 mb-8 text-center">
+        Discover Our <span className="text-blue-600">Featured Blogs </span>
+      </h2>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {blogs.map((blog) => (
+          <Link
+            href={`/blogs/${blog._id}`}
+            key={blog._id}
+            className="group block bg-white  rounded-xl overflow-hidden shadow hover:shadow-lg transition"
+          >
+            {/* Image */}
+            <div className="relative w-full h-52">
+              <Image
+                src={blog.featuredImage || "/placeholder.jpg"}
+                alt={blog.title}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+
+            {/* Content */}
+            <div className="px-4 mt-2  ">
+              <div className='flex flex-col  mb-2'>
+                <h3 className="text-lg font-semibold text-gray-800  line-clamp-2">
+                {blog.title}
+              </h3>
+               <p  className='text-xs text-gray-400 ' >{new Date(blog.createdAt).toLocaleDateString()}</p>
+              </div>
+              <p className="text-gray-600 text-sm line-clamp-3 mb-3">
+                {blog.content}
+              </p>
+      
+              {/* Meta Info */}
+              <div className="flex items-center justify-between text-xs mb-2  text-gray-500">
+                <div className='flex items-center gap-2'>
+                  <Image  src={blog.authorImage} className='rounded-full'  alt="" height={30} width={30} />
+                <span>By {blog.authorName || "Unknown"}</span>
+                </div>
+             
+                <span>{blog.readingTime || "5 min read"}</span>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 };
 

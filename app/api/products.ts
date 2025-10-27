@@ -91,7 +91,7 @@ export async function postImage(imageFile: File) {
 
 export async function updateProductByID(id: string, data: any) {
   try {
-    const response = await axios.put(`/api/products/${id}`, data , {
+    const response = await axios.put(`/api/blogs/${id}`, data , {
       headers: {
         'Content-Type': 'application/json',
       },

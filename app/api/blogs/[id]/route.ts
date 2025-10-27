@@ -14,6 +14,7 @@ export async function GET(req: Request, { params }: any) {
 
 export async function PUT(req: Request, { params }: any) {
   const { userId } = await auth();
+  
   if (!userId)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -44,7 +45,8 @@ export async function DELETE(req: Request, { params }: any) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   await connect();
-  const post = await BlogPost.findById(params.id);
+  const id = await params.id;
+  const post = await BlogPost.findById(id);
   if (!post) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   if (post.author !== userId) {
