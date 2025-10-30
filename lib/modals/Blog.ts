@@ -1,9 +1,11 @@
 import mongoose, { Schema, Document } from "mongoose";
+import { string } from "zod";
 
 interface Comment {
   text: string;
   author?: string;
   createdAt?: Date;
+  authorId : string;
 }
 
 export interface IBlogPost extends Document {
@@ -24,9 +26,11 @@ export interface IBlogPost extends Document {
 
 const commentSchema = new Schema<Comment>(
   {
+
     text: { type: String, required: true },
     author: { type: String, default: "Guest" },
     createdAt: { type: Date, default: Date.now },
+    authorId: { type : String , required : true  }
   },
   { _id: false }
 );

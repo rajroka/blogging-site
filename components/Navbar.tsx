@@ -23,8 +23,8 @@ const Navbar = ({ isAdmin = false }: Props) => {
 
   const mainNav = [
     { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/blogs', label: 'Blog' },
+    { href: '/about-us', label: 'About' },
+    { href: '/blogs', label: 'Blogs' },
     { href: '/contact', label: 'Contact' },
     ...(isAdmin ? [{ href: '/dashboard', label: 'Dashboard' }] : []),
   ];

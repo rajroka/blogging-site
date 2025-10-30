@@ -1,6 +1,5 @@
 // app/blog/page.tsx
 import { fetchBlogs } from "@/lib/fetchproducts";
-import Barchart from "@/components/Barchart";
 import { NotepadText } from "lucide-react";
 import {
   Breadcrumb,
@@ -10,7 +9,23 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+
 export default async function Page() {
+
+
+const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];
+const xLabels = [
+  'Page A',
+  'Page B',
+  'Page C',
+  'Page D',
+  'Page E',
+  'Page F',
+  'Page G',
+];
+
+
+
   const blogs = await fetchBlogs();
   const blognumber = blogs.length;
 
@@ -57,12 +72,12 @@ export default async function Page() {
       </div>
 
       {/* Chart Section */}
+   
+    
       <div className="bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-800 overflow-x-auto">
         <h2 className="text-xl font-semibold text-white mb-4">Blog Statistics</h2>
-        {/* Wrap chart in min width for small screens */}
-        <div className="min-w-[600px]">
-          <Barchart />
-        </div>
+      
+  
       </div>
     </div>
   );

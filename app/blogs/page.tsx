@@ -41,14 +41,22 @@ const Page = async() => {
             className="group block bg-white  rounded-xl overflow-hidden shadow hover:shadow-lg transition"
           >
             {/* Image */}
-            <div className="relative w-full h-52">
-              <Image
-                src={blog.featuredImage || "/placeholder.jpg"}
-                alt={blog.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            </div>
+                        <div className="relative w-full h-60">
+                          <Image
+                            src={blog.featuredImage || "/placeholder.jpg"}
+                            alt={blog.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+            {/* <div className="aspect-[16/9] relative">
+          <Image
+            alt={blog.title}
+            className="object-cover"
+            src={blog.featuredImage || "/images/placeholder.webp"}
+            fill
+          />
+        </div> */}
 
             {/* Content */}
             <div className="px-4 mt-2  ">

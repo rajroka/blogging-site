@@ -61,9 +61,10 @@ const Hero = async () => {
               </div>
             )}
             <div className="p-6 md:w-1/2 flex flex-col justify-center">
-              <h3 className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wide">
+              <h3 className="text-sm sm:text-base bg-amber-300  text-black dark:text-gray-400 mb-2 uppercase tracking-wide">
                 {blogs.category || 'General'}
               </h3>
+
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white">
                 {blogs.title}
               </h2>
