@@ -6,11 +6,15 @@ import Recentblog from '@/components/Recentblog'
 import React from 'react'
 
 const page = () => {
+
+
+
   return (
 <>
 
-<Hero />
-<Recentblog />
+
+<Hero  /> 
+ <Recentblog />
 
 {/* <Blogs/ > */}
 {/* <BentoGrid /> */}
@@ -21,3 +25,5 @@ const page = () => {
 }
 
 export default page
+
+

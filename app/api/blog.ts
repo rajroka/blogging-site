@@ -7,23 +7,10 @@ export async function postBlog(data: {  name: string; description: string; price
       'Content-Type': 'application/json'
   }
 
-
-
-    
-   
-
-
-
-
   })
   return response.data;
 
 }
-
-
-
-
-
 
 export async function getByID(id:string){
   try {
@@ -126,3 +113,4 @@ export async function deleteBlogByID(id: string){
   }
 
 }
+

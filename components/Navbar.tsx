@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 import {
@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import React from 'react';
 import ThemeToggle from './ThemeToggle';
+// import Search from './Search';
 
 type Props = {
   isAdmin?: boolean;
@@ -20,6 +21,9 @@ type Props = {
 const Navbar = ({ isAdmin = false }: Props) => {
   const pathname = usePathname();
   const isDashboard = pathname?.startsWith('/dashboard');
+
+  const searchparams = useSearchParams();
+  const search = searchparams.get('query') || '';
 
   const mainNav = [
     { href: '/', label: 'Home' },
@@ -67,7 +71,7 @@ const Navbar = ({ isAdmin = false }: Props) => {
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>
-
+     {/* <Search  query={search}  /> */}
           {/* Auth Buttons */}
           <div className="flex items-center space-x-3">
             <ThemeToggle />

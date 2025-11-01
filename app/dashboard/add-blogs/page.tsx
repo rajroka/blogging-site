@@ -2,10 +2,10 @@
 
 import { FiUpload } from 'react-icons/fi';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { postBlog } from '@/app/api/blog';
 import { CldUploadWidget, CldImage } from 'next-cloudinary';
 import { useUser } from '@clerk/nextjs';
+import { useForm } from 'react-hook-form';
 
 type BlogFormData = {
   title: string;
@@ -24,6 +24,9 @@ export default function AddBlogPage() {
     setValue,
     reset,
   } = useForm<BlogFormData>();
+
+  const [content, setContent] = useState('');
+
 
   const [imageId, setImageId] = useState('');
   const [imageUrl, setImageUrl] = useState('');
@@ -65,13 +68,14 @@ export default function AddBlogPage() {
   if (!isLoaded) return <div>Loading user info...</div>;
 
   return (
+    
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-semibold mb-6 text-center text-gray-900">
         Add New Blog Post
       </h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Title */}
+        
         <div>
           <label htmlFor="title" className="block mb-1 font-medium text-gray-700">
             Title <span className="text-red-500">*</span>

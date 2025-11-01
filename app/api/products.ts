@@ -95,7 +95,7 @@ export async function updateProductByID(id: string, data: any) {
       headers: {
         'Content-Type': 'application/json',
       },
-    }); // ✅ PUT for update
+    });
     return response.data;
   } catch (error) {
     console.error('Error updating product:', error);
