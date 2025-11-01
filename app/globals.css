@@ -93,7 +93,7 @@ body {
   h6 {
     line-height: 1.1;
     margin-top: 2.5rem;
-    text-wrap: pretty;
+  
   }
 
   h1,
@@ -161,7 +161,8 @@ body {
 
 
  .dashboard{
-  height: 100%;
+  
+    min-height: 100vh;
   overflow-y: visible;
  }
 
@@ -195,3 +196,5 @@ body {
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+

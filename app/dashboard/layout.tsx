@@ -8,12 +8,16 @@ type LayoutProps = {
 const Layout = ({ children }: LayoutProps) => {
   return (
     
-    <div className="flex h-screen ">
-      <aside className="w-64 bg-slate-400 ">
-        <Sidebar />
+    <div className="flex h-screen  ">
+
+
+      
+
+      <aside className="w-64  bg-slate-400  ">
+        <Sidebar  />
       
       </aside>
-      <main className="flex-1 w-full h-screen dashboard overflow-y-auto p-4 ">
+      <main className="flex-1 w-full  dashboard overflow-y-auto p-4 ">
       
         {children}
       </main>

@@ -1,61 +1,63 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-export default function AboutPage() {
+const AboutPage = () => {
   return (
-    <section className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6 py-20">
-      <div className="max-w-4xl text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-6">About Us</h1>
-        <p className="text-lg text-gray-700 leading-relaxed mb-8">
-          Welcome to <span className="font-semibold text-blue-600">Our Company</span> — 
-          a place where creativity meets technology. We’re passionate about building 
-          modern, user-friendly, and scalable digital experiences for everyone.
-        </p>
+    <>
+      {/* Main Container */}
+      <div className="flex flex-col lg:flex-row items-center justify-center flex-1 px-6 sm:px-12 lg:px-24 py-20 gap-12 lg:gap-16 relative">
 
-        <div className="grid md:grid-cols-2 gap-10 items-center">
-          <div>
-            <h2 className="text-2xl font-semibold mb-3">Our Mission</h2>
-            <p className="text-gray-700 leading-relaxed">
-              Our mission is to empower individuals and businesses through 
-              innovative software solutions. We believe in clean design, efficient 
-              code, and creating value for every user.
-            </p>
-          </div>
-          <div>
+        {/* Title (Desktop) */}
+        <h1 className="absolute top-16 lg:top-20 hidden lg:flex text-4xl lg:text-5xl font-extrabold text-gray-900 bg-white px-6 py-2 rounded shadow-lg z-10">
+          ABOUT US
+        </h1>
+
+        {/* Left: Image */}
+        <div className="w-full lg:w-1/2 flex justify-center">
+          <div className="relative w-64 h-80 sm:w-72 sm:h-90 lg:w-96 lg:h-[500px] rounded-xl overflow-hidden shadow-2xl">
             <Image
-              src="/about-image.jpg"
-              alt="Team working"
-              width={500}
-              height={350}
-              className="rounded-2xl shadow-md"
+              src="/me.JPG"
+              alt="About"
+              loading="lazy"
+              fill
+              style={{ objectFit: 'cover' }}
+              className="rounded-xl transition-transform duration-500 hover:scale-105"
             />
           </div>
         </div>
 
-        <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-3">Our Values</h2>
-          <ul className="text-gray-700 leading-relaxed space-y-2">
-            <li>💡 Innovation and creativity in every project</li>
-            <li>🤝 Collaboration and transparency with clients</li>
-            <li>🌍 Building for sustainability and inclusivity</li>
-            <li>🚀 Striving for excellence and continuous growth</li>
-          </ul>
-        </div>
+        {/* Right: Text */}
+        <div className="w-full lg:w-1/2 flex flex-col gap-6 lg:pt-24 px-2 sm:px-4 text-center lg:text-left">
+          {/* Title (Mobile) */}
+          <h1 className="flex lg:hidden text-2xl lg:text-5xl font-extrabold text-gray-900 px-6 py-2 rounded z-10 text-center">
+            ABOUT US
+          </h1>
 
-        <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-3">Made by a Solo Developer 👨‍💻</h2>
-          <p className="text-gray-700 leading-relaxed">
-            This project was created and maintained by a solo developer who handles 
-            everything — from design and development to deployment. Every line of code 
-            and design decision reflects passion, dedication, and continuous learning.
+          <p className="text-gray-800 text-sm md:text-lg leading-relaxed text-balance">
+            This blog is managed by a passionate solo developer dedicated to sharing insights
+            on technology, design, and creativity. The aim is to make learning practical,
+            simple, and enjoyable for everyone. Whether you’re just starting out or exploring
+            new ideas, this space is built to inspire and guide you.
           </p>
-        </div>
 
-        <p className="mt-10 text-gray-600">
-          We’re more than a tech idea — we’re a growing vision built with creativity, 
-          persistence, and love for technology.
-        </p>
+          <p className="text-gray-800 text-sm md:text-lg leading-relaxed text-balance">
+            Explore tutorials, tips, and resources designed to help you grow your skills and
+            stay up-to-date with the latest trends in tech and design.
+          </p>
+
+          <div className="mt-4 flex justify-center lg:justify-start">
+            <Link
+              href="/contact"
+              className="inline-block px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-md transition-all duration-300"
+            >
+              Contact Me
+            </Link>
+          </div>
+        </div>
       </div>
-    </section>
+    </>
   );
-}
+};
+
+export default AboutPage;

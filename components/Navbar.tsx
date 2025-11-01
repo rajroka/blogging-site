@@ -34,13 +34,13 @@ const Navbar = ({ isAdmin = false }: Props) => {
   ];
 
   const dashboardNav = [
-    { href: '/dashboard/add-blog', label: 'Add Blog' },
+      
   ];
 
   const currentNav = isDashboard ? dashboardNav : mainNav;
 
   return (
-    <div className="w-full sticky top-0 left-0 z-50 bg-white dark:bg-gray-950 shadow-sm border-b border-gray-200 dark:border-gray-800">
+    <div className="w-full  nav-height  sticky top-0 left-0 z-50 bg-white dark:bg-gray-950 shadow-sm border-b border-gray-200 dark:border-gray-800">
       <NavigationMenu className="w-full mx-auto bg-transparent">
         <div className="h-16 flex items-center justify-between w-full px-6">
           

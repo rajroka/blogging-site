@@ -40,8 +40,10 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <NavbarWrapper />
-            {children}
+<NavbarWrapper />   
+           <main >
+    {children}
+  </main>
           </ThemeProvider>
         </body>
       </html>
