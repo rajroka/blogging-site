@@ -8,6 +8,8 @@ const AboutPage = () => {
       {/* Main Container */}
       <div className="flex flex-col lg:flex-row items-center justify-center flex-1 px-6 sm:px-12 lg:px-24 py-20 gap-12 lg:gap-16 relative">
 
+
+
         {/* Title (Desktop) */}
         <h1 className="absolute top-16 lg:top-20 hidden lg:flex text-4xl lg:text-5xl font-extrabold text-gray-900 bg-white px-6 py-2 rounded shadow-lg z-10">
           ABOUT US
