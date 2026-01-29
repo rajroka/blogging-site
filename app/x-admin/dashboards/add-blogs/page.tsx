@@ -25,9 +25,6 @@ export default function AddBlogPage() {
     reset,
   } = useForm<BlogFormData>();
 
-  const [content, setContent] = useState('');
-
-
   const [imageId, setImageId] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
@@ -40,19 +37,23 @@ export default function AddBlogPage() {
     setSubmitError('');
 
     try {
+      // Convert tags string to array
       const tagsArray = data.tags
-        ? data.tags.split(',').map((tag) => tag.trim()).filter(Boolean)
+        ? data.tags.split(',').map(tag => tag.trim()).filter(Boolean)
         : [];
 
-      const payload = {
-        ...data,
+      const payload: any = {
+        title: data.title,
+        content: data.content,
+        category: data.category,
         tags: tagsArray,
         featuredImage: imageUrl,
+        authorId: user.id, // required for backend
         authorName: `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim(),
         authorEmail: user.primaryEmailAddress?.emailAddress || '',
       };
 
-      await postBlog(payload as any);
+      await postBlog(payload);
       alert('Blog post added successfully!');
       reset();
       setImageId('');
@@ -68,20 +69,16 @@ export default function AddBlogPage() {
   if (!isLoaded) return <div>Loading user info...</div>;
 
   return (
-    
     <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-semibold mb-6 text-center text-gray-900">
         Add New Blog Post
       </h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        
+        {/* Title */}
         <div>
-          <label htmlFor="title" className="block mb-1 font-medium text-gray-700">
-            Title <span className="text-red-500">*</span>
-          </label>
+          <label className="block mb-1 font-medium text-gray-700">Title *</label>
           <input
-            id="title"
             {...register('title', { required: 'Title is required' })}
             className={`w-full rounded-md border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
               errors.title ? 'border-red-500' : 'border-gray-300'
@@ -91,23 +88,15 @@ export default function AddBlogPage() {
           {errors.title && <p className="text-red-600 text-sm mt-1">{errors.title.message}</p>}
         </div>
 
-        {/* Image Preview */}
+        {/* Image Upload */}
         {imageId && (
           <div className="mb-4 flex justify-center">
-            <CldImage
-              src={imageId}
-              alt="Uploaded blog featured image"
-              width={480}
-              height={300}
-              className="rounded-md object-contain"
-            />
+            <CldImage src={imageId} alt="Blog Image" width={480} height={300} className="rounded-md object-contain" />
           </div>
         )}
-
-        {/* Image Upload Button */}
         <CldUploadWidget
           uploadPreset="hamburger"
-          options={{ resourceType: 'image' }} // only images
+          options={{ resourceType: 'image' }}
           onSuccess={({ event, info }) => {
             if (event === 'success') {
               const uploadInfo = info as { public_id: string; secure_url: string };
@@ -128,21 +117,13 @@ export default function AddBlogPage() {
             </button>
           )}
         </CldUploadWidget>
-        <input
-          type="hidden"
-          {...register('featuredImage', { required: 'Featured image is required' })}
-        />
-        {errors.featuredImage && (
-          <p className="text-red-600 text-sm mt-1">{errors.featuredImage.message}</p>
-        )}
+        <input type="hidden" {...register('featuredImage', { required: 'Featured image is required' })} />
+        {errors.featuredImage && <p className="text-red-600 text-sm mt-1">{errors.featuredImage.message}</p>}
 
         {/* Content */}
         <div>
-          <label htmlFor="content" className="block mb-1 font-medium text-gray-700">
-            Content <span className="text-red-500">*</span>
-          </label>
+          <label className="block mb-1 font-medium text-gray-700">Content *</label>
           <textarea
-            id="content"
             {...register('content', { required: 'Content is required' })}
             className={`w-full rounded border px-3 py-2 resize-y focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
               errors.content ? 'border-red-500' : 'border-gray-300'
@@ -155,11 +136,8 @@ export default function AddBlogPage() {
 
         {/* Category */}
         <div>
-          <label htmlFor="category" className="block mb-1 font-medium text-gray-700">
-            Category <span className="text-red-500">*</span>
-          </label>
+          <label className="block mb-1 font-medium text-gray-700">Category *</label>
           <input
-            id="category"
             {...register('category', { required: 'Category is required' })}
             className={`w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
               errors.category ? 'border-red-500' : 'border-gray-300'
@@ -171,14 +149,11 @@ export default function AddBlogPage() {
 
         {/* Tags */}
         <div>
-          <label htmlFor="tags" className="block mb-1 font-medium text-gray-700">
-            Tags (comma separated)
-          </label>
+          <label className="block mb-1 font-medium text-gray-700">Tags (comma separated)</label>
           <input
-            id="tags"
             {...register('tags')}
             className="w-full rounded border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 border-gray-300"
-            placeholder="e.g. technology, webdev, programming"
+            placeholder="e.g. technology, webdev"
           />
         </div>
 

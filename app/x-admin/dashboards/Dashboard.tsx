@@ -10,7 +10,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 
-export default async function Page() {
+export default async function Dashboard() {
 
 
 const uData = [4000, 3000, 2000, 2780, 1890, 2390, 3490];

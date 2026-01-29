@@ -1,3 +1,6 @@
+
+
+import { authClient } from "@/lib/auth-client";
 import { fetchBlogs } from '@/lib/fetchproducts';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -7,9 +10,16 @@ import { MoveUpRight } from 'lucide-react';
 const Recentblog = async () => {
   const blogs = await fetchBlogs();
   const recentBlogs = blogs.slice(0, 6);
+ 
 
   return (
-    <div className="relative w-full bg-[#EDF2F7] dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 overflow-hidden font-sans">
+
+    <>
+
+ 
+
+
+    {/* <div className="relative w-full bg-[#EDF2F7] dark:from-gray-900 dark:via-gray-800 dark:to-blue-900 overflow-hidden font-sans">
       {/* Background Elements - Continuous from Hero */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Gradient Blobs - Continuing the same pattern */}
@@ -106,7 +116,8 @@ const Recentblog = async () => {
           </Link>
         </div>
       </section>
-    </div>
+    {/* </div> */}
+    </>
   );
 };
 

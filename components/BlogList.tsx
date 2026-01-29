@@ -129,7 +129,7 @@ export default function BlogList({ blogs: initialBlogs }: { blogs: Blog[] }) {
                 </button>
 
                 <Link
-                  href={`/dashboard/edit-blog/${blog._id}`}
+                  href={`/x-admin/dashboards/edit-blogs/${blog._id}`}
                   className="text-cyan-400 hover:text-cyan-500 flex items-center gap-1 text-sm"
                 >
                   <Pencil size={16} /> Edit

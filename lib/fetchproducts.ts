@@ -25,16 +25,44 @@ export const fetchBlogs = async () => {
 
 
 
-export const fetchLatestBlog = async () => {
+// export const fetchLatestBlog = async () => {
+//   await connect();
+
+//   const blog = await BlogPost.find().sort({ createdAt: -1 }).limit(4);
+
+//   if (!blog) {
+//     return null;
+//   }
+
+//   return {
+//     _id: blog._id.toString(),
+//     title: blog.title,
+//     content: blog.content,
+//     author: blog.author,
+//     authorName: blog.authorName || '',
+//     authorEmail: blog.authorEmail || '',
+//     authorImage: blog.authorImage || '',
+//     category: blog.category || '',
+//     tags: blog.tags || [],
+//     featuredImage: blog.featuredImage || '',
+  
+//     slug: blog.slug || '',
+//     comments: blog.comments || [],
+//     createdAt: blog.createdAt?.toISOString() || '',
+//     updatedAt: blog.updatedAt?.toISOString() || '',
+//   };
+// };
+
+
+export const fetchLatestBlogs = async () => {
   await connect();
 
-  const blog = await BlogPost.findOne().sort({ createdAt: -1 });
+  const blogs = await BlogPost.find()
+    .sort({ createdAt: -1 })
+    .limit(4)
+    
 
-  if (!blog) {
-    return null;
-  }
-
-  return {
+  return blogs.map((blog) => ({
     _id: blog._id.toString(),
     title: blog.title,
     content: blog.content,
@@ -45,13 +73,14 @@ export const fetchLatestBlog = async () => {
     category: blog.category || '',
     tags: blog.tags || [],
     featuredImage: blog.featuredImage || '',
-  
     slug: blog.slug || '',
     comments: blog.comments || [],
     createdAt: blog.createdAt?.toISOString() || '',
     updatedAt: blog.updatedAt?.toISOString() || '',
-  };
+  }));
 };
+
+
 
 export const fetchBlogById = async (id: string) => {
   await connect();

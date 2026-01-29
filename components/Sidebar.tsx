@@ -11,10 +11,10 @@ const Sidebar = () => {
   const pathname = usePathname()
 
   const links = [
-    { href: '/dashboard', label: 'Dashboard', icon: <House /> },
-    { href: '/dashboard/all-blogs', label: 'View Posts', icon: '📄' },
-    { href: '/dashboard/edit-blog', label: 'Edit Blog', icon: '✏️' },
-    { href: '/dashboard/add-blogs', label: 'New Post', icon: <CirclePlus /> },
+    { href: '/x-admin/dashboards', label: 'Dashboard', icon: <House /> },
+    { href: '/x-admin/dashboards/all-blogs', label: 'View Posts', icon: '📄' },
+    { href: '/x-admin/dashboards/edit-blogs', label: 'Edit Blog', icon: '✏️' },
+    { href: '/x-admin/dashboards/add-blogs', label: 'New Post', icon: <CirclePlus /> },
   ]
 
   return (

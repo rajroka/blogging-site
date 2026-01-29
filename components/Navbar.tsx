@@ -28,11 +28,11 @@ const Navbar = ({ isAdmin = false }: Props) => {
     { href: '/about-us', label: 'About' },
     { href: '/blogs', label: 'Blogs' },
     { href: '/contact', label: 'Contact' },
-    ...(isAdmin ? [{ href: '/dashboard', label: 'Dashboard' }] : []),
+    ...(isAdmin ? [{ href: '/x-admin/dashboards', label: 'Dashboard' }] : []),
   ];
 
   return (
-    <div className="w-full sticky top-0 left-0 z-50 bg-white dark:bg-gray-950 shadow-sm border-b border-gray-200 dark:border-gray-800">
+    <div className="w-full sticky top-0 left-0 z-50 sm:px-8 md:px-12 lg:px-20 bg-white dark:bg-gray-950  border-b border-gray-200 dark:border-gray-800">
       <NavigationMenu className="w-full mx-auto bg-transparent">
         <div className="h-16 flex items-center justify-between w-full px-6">
           {/* Logo */}

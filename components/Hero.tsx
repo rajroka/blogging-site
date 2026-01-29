@@ -1,98 +1,120 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { fetchBlogById, fetchLatestBlog } from '@/lib/fetchproducts';
+import { fetchLatestBlogs } from '@/lib/fetchproducts';
+
+const formatDate = (date: string) =>
+  new Date(date).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
 
 const Hero = async () => {
-  const blogs = await fetchLatestBlog();
+  const blogs = await fetchLatestBlogs();
+  const blogsArray = Array.isArray(blogs) ? blogs : blogs ? [blogs] : [];
+  const latest = blogsArray[0] ?? null;
+  const other = blogsArray.slice(1, 4);
 
   return (
-    <div className="relative w-full py-16 px-6 md:px-12 lg:px-20 m-auto bg-[#EDF2F7] dark:bg-gray-900 overflow-hidden font-sans">
-      
-      {/* Background Objects */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Large Abstract Shapes */}
-        {/* <div className="absolute -top-20 -left-20 w-80 h-80 bg-blue-100 dark:bg-blue-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-40"></div>
-        <div className="absolute -bottom-20 -right-20 w-96 h-96 bg-purple-100 dark:bg-purple-900/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-amber-100 dark:bg-amber-900/20 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
-         */}
-        {/* Geometric Patterns */}
-        <div className="absolute top-10 right-10 w-32 h-32 border-4 border-blue-200 dark:border-blue-700 rounded-lg rotate-45 opacity-20"></div>
-        <div className="absolute bottom-10 left-10 w-24 h-24 border-4 border-purple-200 dark:border-purple-700 rounded-full opacity-25"></div>
-        
-        {/* Floating Dots Pattern */}
-        <div className="absolute inset-0 opacity-10 dark:opacity-5">
-          <div className="absolute top-20 right-20 w-2 h-2 bg-blue-400 rounded-full"></div>
-          <div className="absolute bottom-32 left-20 w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
-          <div className="absolute top-40 left-48 w-1 h-1 bg-amber-400 rounded-full"></div>
-        </div>
-
-        {/* Line Elements */}
-        <div className="absolute top-20 right-32 w-px h-24 bg-blue-300 dark:bg-blue-600 opacity-30"></div>
-        <div className="absolute bottom-32 left-1/3 w-32 h-px bg-purple-300 dark:bg-purple-600 opacity-40"></div>
-        
-        {/* Animated Floating Elements */}
-        <div className="absolute top-20 right-20 w-4 h-4 bg-yellow-400 rounded-full animate-bounce opacity-60"></div>
-        <div className="absolute bottom-32 left-20 w-3 h-3 bg-blue-400 rounded-full animate-bounce opacity-50 delay-500"></div>
-      </div>
-
-      {/* Content */}
-      {blogs && (
-        <div className="relative z-10 h-full w-full transform hover:scale-[1.02] transition-transform duration-300">
-          <Link 
-            href={`/blogs/${blogs._id}`} 
-            className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row h-[400px] sm:h-[450px] border border-gray-100 dark:border-gray-700 hover:shadow-3xl transition-all duration-300 group"
-          >
-            {blogs.featuredImage && (
-              <div className="w-full md:w-1/2 h-64 sm:h-full relative group overflow-hidden">
-                <Image
-                  src={blogs.featuredImage}
-                  alt={blogs.title}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-            )}
-            <div className="p-8 md:w-1/2 flex flex-col justify-center relative">
-              {/* Decorative elements */}
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-amber-400 rounded-full opacity-80"></div>
-              <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-blue-400 rounded-full opacity-60"></div>
-              
-              <h3 className="inline-block px-4 py-2 bg-amber-400 text-black text-sm font-semibold rounded-full mb-4 uppercase tracking-wide self-start shadow-lg">
-                {blogs.category || 'General'}
-              </h3>
-
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
-                {blogs.title}
-              </h2>
-              
-              <div className="flex items-center gap-3 mt-6 text-sm text-gray-600 dark:text-gray-300">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="font-medium">{blogs.authorName || 'Unknown Author'}</span>
+    <section className="w-full py-20  sm:py-16 lg:py-10 px-4 sm:px-8 md:px-12 lg:px-20 bg-slate-50 dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+          
+          {/* Featured Blog */}
+          <div className="lg:w-1/2 w-full">
+            {latest && (
+              <Link
+                href={`/blogs/${latest._id}`}
+                className="group relative flex flex-col min-h-[400px] sm:min-h-[500px] lg:h-full rounded-xl overflow-hidden border border-zinc-200 dark:border-white/10 shadow-sm hover:shadow-xl transition-all duration-300"
+              >
+                {/* Background Image Container */}
+                <div className="absolute inset-0 w-full h-full">
+                  <Image
+                    src={latest.featuredImage || '/placeholder.jpg'}
+                    alt={latest.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    priority
+                  />
+                  {/* Overlay for readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
                 </div>
-                <span className="text-gray-400">•</span>
-                <time 
-                  dateTime={blogs.createdAt}
-                  className="bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-full text-xs"
-                >
-                  {new Date(blogs.createdAt).toLocaleDateString()}
-                </time>
-              </div>
-              
-              {/* Read more indicator */}
-              <div className="absolute bottom-6 right-6 flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                Read more
-                <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-          </Link>
+
+                {/* Content Overlay */}
+                <div className="relative mt-auto p-6 sm:p-8 md:p-10 flex flex-col justify-end">
+                  <span className="inline-block text-[10px] sm:text-xs uppercase tracking-widest font-bold px-3 py-1.5 bg-blue-600 text-white rounded-md w-fit mb-4">
+                    {latest.category}
+                  </span>
+                  <h2 className="font-bold text-2xl sm:text-3xl lg:text-4xl leading-tight text-white group-hover:text-blue-200 transition-colors mb-4 line-clamp-3">
+                    {latest.title}
+                  </h2>
+                  <div className="flex items-center gap-3 text-sm text-zinc-300 font-medium">
+                    <span>{latest.authorName || 'Unknown Author'}</span>
+                    <span className="opacity-50">•</span>
+                    <span>{formatDate(latest.createdAt)}</span>
+                  </div>
+                </div>
+              </Link>
+            )}
+          </div>
+
+          {/* Other Blogs List */}
+          <div className="lg:w-1/2 w-full flex flex-col gap-4 sm:gap-6">
+            {other.map((blog: any) => (
+              <Link
+                href={`/blogs/${blog._id}`}
+                key={blog._id}
+                className="group flex flex-col sm:flex-row bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-white/10 overflow-hidden rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 min-h-[140px]"
+              >
+                {/* Image Section */}
+                <div className="relative w-full sm:w-1/3 h-48 sm:h-auto overflow-hidden">
+                  <Image
+                    src={blog.featuredImage || '/placeholder.jpg'}
+                    alt={blog.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                </div>
+
+                {/* Content Section */}
+                <div className="p-5 sm:p-6 flex flex-col justify-between flex-1">
+                  <div className="space-y-2">
+                    <span className="inline-block text-[10px] font-bold uppercase px-2 py-0.5 border border-zinc-200 dark:border-zinc-700 rounded text-zinc-500 dark:text-zinc-400">
+                      {blog.category}
+                    </span>
+                    <h3 className="font-bold text-lg sm:text-xl text-zinc-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2 leading-snug">
+                      {blog.title}
+                    </h3>
+                  </div>
+
+                  {/* Author & Date Footer */}
+                  <div className="flex items-center justify-between mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800">
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-6 h-6">
+                        <Image
+                          src={blog.authorImage || '/default-avatar.png'}
+                          alt={blog.authorName || 'Staff'}
+                          fill
+                          className="rounded-full grayscale object-cover"
+                        />
+                      </div>
+                      <span className="text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+                        {blog.authorName || 'Staff'}
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-zinc-500 dark:text-zinc-500">
+                      {formatDate(blog.createdAt)}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
         </div>
-      )}
-    </div>
+      </div>
+    </section>
   );
 };
 
