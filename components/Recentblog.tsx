@@ -1,6 +1,4 @@
 
-
-import { authClient } from "@/lib/auth-client";
 import { fetchBlogs } from '@/lib/fetchproducts';
 import Image from 'next/image';
 import Link from 'next/link';
